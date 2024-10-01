@@ -96,12 +96,9 @@ def send_to_mqtt(weather_data: dict):
     # Authentifizierung mit Benutzername und Passwort
     if mqtt_username and mqtt_password:
         client.username_pw_set(mqtt_username, mqtt_password)
-
-    # Verbindung zum Broker herstellen
-    if not mqtt_port:
-        mqtt_port = 1883
-        
-    client.connect(mqtt_broker, mqtt_port)
+    
+    port = int(mqtt_port)
+    client.connect(mqtt_broker, port)
 
     for day, values in weather_data.items():
         for key, value in values.items():

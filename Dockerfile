@@ -31,14 +31,11 @@ WORKDIR /app
 
 # Copy the Python script 'app.py' to /app
 COPY scrape.py /app/
+RUN chmod +x /app/scrape.py
 
-# Add the cron job
-RUN echo "$CRON_SCHEDULE python /app/scrape.py >> /var/log/cron.log 2>&1" > /etc/cron.d/scrape-cron \
-    && chmod 0644 /etc/cron.d/scrape-cron \
-    && crontab /etc/cron.d/scrape-cron
+RUN touch /var/log/cron.log
 
-# Start cron service
-CMD ["cron", "-f"]
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
 
-# Specify the default command to execute when the container starts
-ENTRYPOINT [ "python", "scrape.py"]
+ENTRYPOINT ["/entrypoint.sh"]
