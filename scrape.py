@@ -29,7 +29,6 @@ chrome_options.add_argument('--no-sandbox')
 chrome_options.add_argument('--headless')
 chrome_options.add_argument('--disable-gpu')
 chrome_options.add_argument('--disable-dev-shm-usage')
-chrome_options.add_argument("--window-size=1920,1080")
 chrome_options.add_argument(f"--user-agent={user_agent}")
 driver = webdriver.Chrome(options=chrome_options)
 
@@ -45,6 +44,11 @@ def scrape_website() -> dict:
     
     # Schleife für 3 Tage (Tag 1, 2 und 3)
     for day in range(1, 4):
+        
+        #aktuelle Temperatur
+        if day == 1:
+            all_days_data["now"] = extract_current(soup)
+        
         element = soup.select_one(f'[data-label="VHSZeitraum_zumTag{day}"]')
         
         if element:
@@ -56,6 +60,18 @@ def scrape_website() -> dict:
     driver.quit()
     
     return all_days_data
+
+
+def extract_current(soup: BeautifulSoup) -> dict:
+    data = {}
+    
+    #temperatur
+    temp_raw = soup.find('div', class_='delta rtw_temp').text
+    temp = re.sub(r'[^\d\-]', '', temp_raw)
+    
+    data['temp'] = temp
+    return data
+    
 
 def extract_day(soup: BeautifulSoup) -> dict:
     
