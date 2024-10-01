@@ -7,12 +7,12 @@ from bs4 import BeautifulSoup
 from selenium import webdriver
 import paho.mqtt.client as mqtt
 
-mqtt_broker = str(os.getenv("MQTT_BROKER"))
-mqtt_port = str(os.getenv("MQTT_PORT"))
-mqtt_topic = str(os.getenv("MQTT_TOPIC"))
-mqtt_username = str(os.getenv("MQTT_USERNAME"))
-mqtt_password = str(os.getenv("MQTT_PASSWORD"))
-website_url = str(os.getenv("WETTERCOM_URL"))
+mqtt_broker = os.getenv("MQTT_BROKER")
+mqtt_port = os.getenv("MQTT_PORT")
+mqtt_topic = os.getenv("MQTT_TOPIC")
+mqtt_username = os.getenv("MQTT_USERNAME")
+mqtt_password = os.getenv("MQTT_PASSWORD")
+website_url = os.getenv("WETTERCOM_URL")
 
 #Chromedriver aufsetzen
 user_agents = [
